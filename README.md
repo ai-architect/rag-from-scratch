@@ -31,6 +31,8 @@ vectors.
 | `build_index.py`  | Reads `corpus/`, chunks the text by hand (or with LangChain), embeds the chunks, and writes a pickle. |
 | `embedders.py`    | Small wrapper around the Gemini and OpenAI embedding APIs (batching, retries). |
 | `rag_search.py`   | Loads the pickle and runs an exhaustive cosine-similarity search in pure `math`. |
+| `rag_search_no_deps.py` | Same as `rag_search.py`, but embeds the query via the REST API with `urllib`, so it needs no `pip install` at all. `--dry-run` also needs no API key. |
+| `precompute_queries.py` | Embeds `eval_questions.txt` once into `index_gemini.queries.json`, the query vectors used by `--dry-run`. |
 | `rag_search_numpy.py` | The same search, vectorized: an `(N, d)` matrix, `M_hat @ q_hat`, `np.argpartition`. |
 | `rag_search_jax.py`   | The same search in JAX: a `jax.jit`-compiled kernel with `jax.lax.top_k`; runs on a GPU or TPU if available. |
 | `ivf.py`          | IVF in pure `math`: spherical k-means (k-means++ start) plus inverted lists; search probes the `nprobe` closest lists. |
@@ -87,6 +89,9 @@ LSH need one extra build step, which reads the stored vectors and makes no API c
 ```bash
 python rag_search.py       --index index_gemini.pkl                    # pure math, interactive
 python rag_search.py       --index index_gemini.pkl --top-k 3 --query "When was Deutsche Bank founded?"
+python rag_search_no_deps.py --index index_gemini.pkl                  # same, standard library only (no pip install)
+python rag_search_no_deps.py --dry-run                                  # no pip, no API key: precomputed query vectors
+python rag_search_no_deps.py --dry-run --interactive                    # pick one of the 20 cached questions
 python rag_search_numpy.py --index index_gemini.pkl                    # same, NumPy (pip install numpy)
 python rag_search_jax.py   --index index_gemini.pkl                    # same, JAX (add --x64 for float64)
 ```
