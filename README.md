@@ -303,6 +303,18 @@ Some good test queries: *"When was Deutsche Bank founded?"*, *"Why did Lehman Br
 collapse?"*, *"What does Basel III require for capital ratios?"*, *"Which bank took over
 Credit Suisse?"*, *"How does fractional-reserve banking create money?"*
 
+### Precomputed embeddings in pickle file
+The pickle holds a dict, and every entry in chunks stores a chunk's text and its embedding side by side:
+```json
+{"meta": {"provider": "gemini", "dim": 3072, ...},
+   "chunks": [
+     {"id": 0, "source": "2008_financial_crisis.txt", "chunk_index": 0,
+      "start_char": 0, "end_char": 690,
+      "text": "The 2008 financial crisis was ...",
+      "vector": [0.0123, -0.0456, ...]},  // 3072 floats
+     ...]}
+```
+
 ## Suggested extensions
 
 Done so far:
