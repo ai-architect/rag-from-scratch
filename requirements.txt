@@ -1,0 +1,10 @@
+# Embedding providers (you only need the one you use)
+openai
+google-genai
+
+# Optional: only for `build_index.py --chunker langchain`
+# langchain-text-splitters
+
+# Optional: only for rag_search_numpy.py / rag_search_jax.py
+numpy
+jax            # CPU build; for an NVIDIA GPU use: pip install "jax[cuda12]"
